@@ -1,24 +1,35 @@
 package main
 
 import (
-	"LifeService"
+	"context"
+
+	"github.com/TarsDemo/Tars-MiniProgramm-Service-MessageWallServer/tars-protocol/LifeService"
 )
 
-//MessageWallImp 表白墙实现类
+// MessageWallImp servant implementation
 type MessageWallImp struct {
 	dataServiceProxy *LifeService.DataService
 	dataServiceObj   string
 }
 
-func (imp *MessageWallImp) init() {
+// Init servant init
+func (imp *MessageWallImp) Init() error {
+	//initialize servant here:
 	imp.dataServiceProxy = new(LifeService.DataService)
-	imp.dataServiceObj   = "LifeService.DataServer.DataServiceObj"
+	imp.dataServiceObj = "LifeService.DataServer.DataServiceObj"
 
 	comm.StringToProxy(imp.dataServiceObj, imp.dataServiceProxy)
+	return nil
+}
+
+// Destroy servant destory
+func (imp *MessageWallImp) Destroy() {
+	//destroy servant here:
+	//...
 }
 
 //PostMessage 发布表白
-func (imp *MessageWallImp) PostMessage(Msg *LifeService.Message) (int32, error) {
+func (imp *MessageWallImp) PostMessage(ctx context.Context, Msg *LifeService.Message) (int32, error) {
 	iRet, err := imp.dataServiceProxy.InsertMessage(Msg)
 
 	if err != nil {
@@ -30,7 +41,7 @@ func (imp *MessageWallImp) PostMessage(Msg *LifeService.Message) (int32, error) 
 }
 
 //GetMessageList 获取列表
-func (imp *MessageWallImp) GetMessageList(Index int32, Date string, wxID string, NextIndex *int32, MsgList *[]LifeService.Message) (int32, error) {
+func (imp *MessageWallImp) GetMessageList(ctx context.Context, Index int32, Date string, wxID string, NextIndex *int32, MsgList *[]LifeService.Message) (int32, error) {
 	iRet, err := imp.dataServiceProxy.GetMsgList(Index, Date, wxID, NextIndex, MsgList)
 
 	if err != nil {
@@ -42,7 +53,7 @@ func (imp *MessageWallImp) GetMessageList(Index int32, Date string, wxID string,
 }
 
 //AddLike 点赞
-func (imp *MessageWallImp) AddLike(messageID string) (int32, error) {
+func (imp *MessageWallImp) AddLike(ctx context.Context, messageID string) (int32, error) {
 	iRet, err := imp.dataServiceProxy.AddLike(messageID)
 	if err != nil {
 		SLOG.Error("Call Remote Server DataServer Error: ", err.Error())
@@ -52,7 +63,7 @@ func (imp *MessageWallImp) AddLike(messageID string) (int32, error) {
 }
 
 //GetLike 获取点赞数
-func (imp *MessageWallImp) GetLike(messageID string, LikeCount *int32) (int32, error) {
+func (imp *MessageWallImp) GetLike(ctx context.Context, messageID string, LikeCount *int32) (int32, error) {
 	iRet, err := imp.dataServiceProxy.GetLike(messageID, LikeCount)
 	if err != nil {
 		SLOG.Error("Call Remote Server Error: ", err.Error())

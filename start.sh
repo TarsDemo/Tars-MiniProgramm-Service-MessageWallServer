@@ -1,3 +1,3 @@
 #!/bin/bash
 make
-./MessageWallServer --config=MessageWallServer.conf
+./build/MessageWallServer --config=config.conf
