@@ -1,4 +1,6 @@
 # MessageWallServer
+[English Version](README_en.md)
+
 大学生活服务平台表白墙后端服务，提供表白发布，表白墙留言获取功能。
 
 服务接口可查看[接口文档](docs/RPC.md)
